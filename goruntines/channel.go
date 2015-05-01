@@ -1,5 +1,7 @@
 package goruntines
-import "log"
+import (
+	"log"
+)
 
 type Queue struct {
 	channel chan int
@@ -26,4 +28,19 @@ func (this *Queue) Get() int {
 
 func (this *Queue) Status(){
 	log.Print("count:",this.count,",cap:",this.cap)
+}
+
+func Main(){
+	q := Init(10)
+	go func(q *Queue) {
+		for i := 0; i<20; i++ {
+			q.Add(i)
+			q.Status()
+			log.Println("index:",i)
+		}
+	}(q)
+	for i := 0; i<20; i++ {
+		a := q.Get()
+		log.Println("get:",a,",index:",i)
+	}
 }
